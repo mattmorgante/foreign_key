@@ -4,8 +4,18 @@ class ExpensesController < ApplicationController
   # GET /expenses
   # GET /expenses.json
   def index
-    @expenses = Expense.all
-  end
+    if params[:category].blank?
+      @expenses = Expense.all.order("created_at DESC")
+    else 
+      @category_id = Category.find_by(name: params[:category]).id
+      @expenses = Expense.where(category_id: @category_id).order("created_at DESC")
+    end 
+  end 
+
+       # going to pass through a category hash - if it's blank everything 
+      # if the hash has a specific id, we're going to only show those expenses
+
+
 
   # GET /expenses/1
   # GET /expenses/1.json
